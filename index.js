@@ -42,4 +42,13 @@ app.post('/',async (req,res)=>{
     res.end();
 })
 
+app.post('/skipValidation',async(req,res)=>{
+    if(req.headers.authorization===`${process.env.PASSWORD}`)
+    {
+        await mongoose.connect(`${process.env.DB_CONNECT}`,{useNewUrlParser: true, useUnifiedTopology: true});
+        const t=new post({post:req.body.rant});
+        await t.save({validateBeforeSave:false});
+    }
+    res.status(200).send();
+})
 app.listen(process.env.PORT||5000);
